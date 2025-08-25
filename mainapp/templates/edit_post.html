@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AcrossLandsExpressMail — Post a Flight</title>
+
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root{
+  --bg:#f2f4f7;
+  --surface:#ffffff;
+  --deep-blue:#0b3d91;
+  --muted:#6b7280;
+  --accent:#ff7a18;
+  --card-shadow: 0 6px 18px rgba(11,61,145,0.06);
+  --radius:12px;
+}
+
+/* Base */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background:var(--bg);
+  color:#0f1724;
+  line-height:1.45;
+}
+a{text-decoration:none; color:inherit}
+
+/* Header */
+.site-header{
+  position:sticky; top:0; z-index:40;
+  backdrop-filter: blur(6px);
+  background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.55));
+  border-bottom:1px solid rgba(15,23,36,0.04);
+  padding:14px 20px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.brand{display:flex; align-items:center; gap:12px}
+.logo {
+  width:44px; height:44px; border-radius:10px; display:grid; place-items:center;
+  background:var(--deep-blue); color:white; font-weight:700; font-family:Poppins, Inter;
+  box-shadow: 0 6px 18px rgba(11,61,145,0.12);
+}
+.nav{
+  display:flex; gap:18px; align-items:center;
+}
+.nav a{color:var(--muted); font-weight:600}
+
+/* Layout */
+.wrap{max-width:600px; margin:28px auto; padding:0 20px}
+
+/* Form */
+h1 {
+  font-family: Poppins, Inter;
+  font-size: 28px;
+  color: var(--deep-blue);
+  margin-bottom: 24px;
+  text-align: center;
+}
+.addform {
+  background: var(--surface);
+  padding: 24px 28px;
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+label {
+  font-weight: 600;
+  color: var(--deep-blue);
+  margin-bottom: 6px;
+  display: block;
+  font-size: 14px;
+}
+input[type="text"],
+input[type="date"],
+input[type="number"],
+select,
+textarea {
+  border: 1px solid rgba(15,23,36,0.12);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 15px;
+  background: transparent;
+  font-family: inherit;
+  color: #0f1724;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+}
+input:focus, select:focus, textarea:focus{
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 6px var(--accent);
+}
+textarea { min-height: 80px }
+.btn-submit {
+  background: var(--accent);
+  color: white;
+  padding: 14px 0;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.btn-submit:hover { background: #e06700 }
+.btn-cancel {
+  color:#e40404f9;
+  text-align:center;
+  font-weight:600;
+}
+
+/* Mobile Back Button */
+.mobile-back {
+  display:none;
+  background:none;
+  border:none;
+  color:var(--deep-blue);
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+  margin-bottom:16px;
+}
+
+/* Bottom sticky nav for mobile */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  display: none;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 15px;
+  width: 100%;
+  z-index: 50;
+}
+.mobile-bottom-nav .nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #6b7280;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.mobile-bottom-nav .nav-item i {
+  font-size: 22px;
+}
+
+.mobile-bottom-nav .nav-item.center-btn {
+  background: #7c4dff; /* purple circle */
+  color: #fff;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -25px; /* floats above nav bar */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-size: 28px;
+}
+
+.mobile-bottom-nav .nav-item.active i {
+  color: #7c4dff;
+}
+
+/* Responsive */
+
+@media (max-width:764px){
+  .nav { display:none }
+  .mobile-back { display:inline-block }
+  .wrap { padding:0 16px }
+  .addform { padding:20px }
+  .mobile-bottom-nav { display:flex }
+  .pp{display: none;}
+  .pp > div {display: none;}
+    .site-header{
+    display: none;
+  }
+  .site-header > div{display: none;}
+  .wrap{padding-bottom: 5rem;position: relative;}
+  .profile-header{
+    background: transparent;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+  }
+}
+
+</style>
+</head>
+<body>
+{% include 'navbar2.html' %}
+
+<main class="wrap" role="main" aria-label="Post a Flight">
+  <button class="mobile-back" onclick="history.back()">← Back</button>
+
+  <h1>Edit Flight</h1>
+
+  <form action="" method="post" class="addform">
+    {% csrf_token %}
+    <label for="departure">Departure</label>
+    {{form.departure_country}}
+    <label for="arrival">Arrival</label>
+    {{form.destination_country}}
+
+    <label for="date">Flight Date</label>
+    <input type="date" id="date" name="departure_date" required min="{{today|date:'Y-m-d' }}" value="{{post.departure_date | date:'Y-m-d'}}">
+
+    <label for="weight">Available Weight (kg)</label>
+    <input type="range" id="weight" name="max_weight" min="1" max="63" step="1" oninput="this.nextElementSibling.value = this.value" value="{{post.max_weight}}" required>
+    <output style="color: var(--deep-blue); font-size: 15px; font-weight: 800;text-align: center;">{{post.max_weight}}</output>
+
+    <label for="details">Note(optional)</label>
+    <textarea id="details" name="note" placeholder="Any special instructions or info...">{{post.note}}</textarea>
+
+    <button type="submit" class="btn-submit">Post Flight</button>
+  </form>
+</main>
+
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-bottom-nav">
+  <a href="/" class="nav-item"><i class="fas fa-home"></i></a>
+  <a href="/search/find_users" class="nav-item"><i class="fa fa-users"></i></a>
+  <a href="/search/flights" class="nav-item"><i class="fas fa-search"></i></a>
+  <a href="/add" class="nav-item center-btn"><i class="fas fa-plane"></i></a>
+  <a href="/notifications" class="nav-item notifiy-btn"><i class="fa fa-bell" aria-hidden="true"><span class="badge" id="notifcountmobile"></span></i></a>
+  <a href="/chat/inbox/" class="nav-item"><i class="fa fa-comment" aria-hidden="true"></i></a>
+  <a href="/profile/{{request.user}}" class="nav-item"><i class="fas fa-user"></i></a>
+</nav>
+</body>
+</html>

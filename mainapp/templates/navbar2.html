@@ -1,0 +1,112 @@
+<head>
+      	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+
+</head>
+<style>
+    .badge {
+  background: red;
+  color: #fff;
+  border: none;
+  font-size: 11px;
+  padding: 0px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  position: absolute;
+  top: -9px;
+  right: -5px;
+}
+.btn-logout:hover{
+  background: var(--accent);
+
+  opacity: 1;
+}
+  .fa.fa-bell{
+    position: relative;
+  }
+    .fa.fa-bell .badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
+<header class="site-header">
+    <div class="brand">
+      <div class="logo">ALEM</div>
+      <div class="logomini">
+        <div style="font-weight:700;color:var(--deep-blue);">AcrossLandsExpressMail </div>
+        <div style="font-size:12px;color:var(--muted)">Trusted traveler shipments</div>
+      </div>
+    </div>
+
+    <nav class="nav" aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/search/flights">Find Flights</a>
+      <a href="/search/find_users">Find Friends</a>
+      <a href="/chat/inbox/">Messages</a>
+      <a href="/notifications" style="position: relative; ">Notifications<span class="badge" id="notifcount"></span></a>
+      <a class="btn-primary" href="/add">Post a Flight</a>
+    </nav>
+
+    <div class="pp" style="display: flex; align-items: center; gap: 1rem;">
+        <form action="{% url 'logout' %}" method="post">
+          {%csrf_token%}
+          <button class="btn-logout" style="background: transparent;cursor: pointer; opacity: 8; border: none; padding: 10px;font-size: 12px;"><span class="material-symbols-outlined" style="font-size: 12px;">logout</span>Logout</button>
+        </form>
+        {%if my_pp.is_verified%}
+        <div class="name" style="font-size: 18px; color: var(--deep-blue);"><a href="/profile/{{request.user}}"> {{request.user}}</a><span class="material-symbols-outlined" style="color: rgb(15, 163, 15); transform: rotate(360deg);font-size: 13px;">verified</span></div>
+        {%else%}
+        <div class="name" style="font-size: 18px; color: var(--deep-blue);"><a href="/profile/{{request.user}}"> {{request.user}}</a><span class="material-symbols-outlined" style="color: rgb(187, 211, 5); transform: rotate(360deg); font-size: 13px;">verified_off</span></div>
+        {%endif%}
+    
+        <div class="pcircle" style="background: black; width: 54px; height: 54px;border-radius: 50%;overflow: hidden;">
+            <img src="{{my_pp.profile_picture.url}}" alt="pp" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+    </div>
+  </header>
+  <script>
+    if (window.matchMedia("(max-width: 1011px)").matches){
+      MobileVersion();
+    }
+    else{
+     DesktopVersion();
+    }
+    function DesktopVersion(){
+      function checkNotifications() {
+        fetch('/notifications/notread')
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('notifcount').textContent = data.unread_count;
+        }
+      );
+    }
+    checkNotifications();
+    setInterval(checkNotifications, 5000);
+    }
+    function MobileVersion(){
+      function checkNotifications() {
+        fetch('/notifications/notread')
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('notifcountmobile').textContent = data.unread_count;
+        }
+      );
+    }
+    checkNotifications();
+    setInterval(checkNotifications, 5000);
+    }
+
+</script>

@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AcrossLandsExpressMail — Notifications</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f2f4f7;
+      --surface:#ffffff;
+      --deep-blue:#0b3d91;
+      --muted:#6b7280;
+      --accent:#ff7a18;
+      --card-shadow: 0 6px 18px rgba(11,61,145,0.06);
+      --radius:12px;
+    }
+
+    /* Reset / base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--bg);
+      color:#0f1724;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+
+    a{color:inherit; text-decoration:none}
+
+    /* Header (same as landing) */
+    .site-header{
+      position:sticky; top:0; z-index:40;
+      backdrop-filter: blur(6px);
+      background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.55));
+      border-bottom:1px solid rgba(15,23,36,0.04);
+      padding:14px 20px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo {
+      width:44px; height:44px; border-radius:10px; display:grid; place-items:center;
+      background:var(--deep-blue); color:white; font-weight:700; font-family:Poppins, Inter;
+      box-shadow: 0 6px 18px rgba(11,61,145,0.12);
+    }
+    .nav{
+      display:flex; gap:18px; align-items:center;
+    }
+    .nav a{color:var(--muted); font-weight:600}
+    .btn-login{background:transparent; padding:8px 12px; border-radius:8px; border:1px solid transparent; font-weight:600}
+    .btn-primary{background:var(--accent); color:white; padding:10px 14px; border-radius:10px; font-weight:700}
+
+    /* Layout */
+    .wrap{max-width:1100px; margin:28px auto; padding:0 20px}
+
+    /* Notifications list */
+    h1 {
+      font-family: Poppins, Inter;
+      font-size: 28px;
+      color: var(--deep-blue);
+      margin-bottom: 24px;
+    }
+    .notifications-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .notification-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    .notification-card.unread {
+      background-color: var(--accent); /* subtle light blue for unread */
+    }
+    .notification-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      font-family: Poppins, Inter;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .notification-content {
+      flex: 1;
+    }
+    .notification-title {
+      font-weight: 700;
+      color: var(--deep-blue);
+      margin: 0 0 4px;
+    }
+    .notification-text {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0;
+    }
+    .notification-time {
+      font-size: 12px;
+      color: var(--muted);
+      margin-left: auto;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .mobile-back {
+  display:none;
+  background:none;
+  border:none;
+  color:var(--deep-blue);
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+  margin-bottom:16px;
+}
+
+/* Bottom sticky nav for mobile */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  display: none;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 15px;
+  width: 100%;
+  z-index: 50;
+}
+
+.mobile-bottom-nav .nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #6b7280;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.mobile-bottom-nav .nav-item i {
+  font-size: 22px;
+}
+
+.mobile-bottom-nav .nav-item.center-btn {
+  background: #7c4dff; /* purple circle */
+  color: #fff;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -25px; /* floats above nav bar */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-size: 28px;
+}
+
+.mobile-bottom-nav .nav-item.active i {
+  color: #7c4dff;
+}
+
+
+    /* Responsive */
+@media (max-width:940px){
+    .notification-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .notification-time {
+        margin-left: 0;
+    }
+}
+@media (max-width:1011px){
+  .nav { display:none }
+  .mobile-back { display:inline-block }
+  .wrap { padding:0 16px ;}
+  .addform { padding:20px }
+  .mobile-bottom-nav { display:flex }
+  .site-header{
+    display: none;
+  }
+  .site-header > div{display: none;}
+  .wrap{padding-bottom: 5rem;position: relative;}
+  .profile-header{
+    background: transparent;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+  }
+  
+  .nav-item.notify-btn{
+    position: relative;
+  }
+  .fa.fa-bell{
+    position: relative;
+  }
+    .fa.fa-bell .badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+}
+  </style>
+</head>
+<body>
+
+{%include 'navbar2.html'%}
+
+<main class="wrap" role="main" aria-label="Notifications">
+      <button class="mobile-back" onclick="history.back()">← Back</button>
+
+  <h1>Notifications</h1>
+
+  <div class="notifications-list" role="list">
+    {%for n in notifications%}
+        {%if not n.is_read%}
+    <article  class="notification-card unread" role="listitem" tabindex="0">
+    
+      <div class="notification-icon">{%if 'following' in n.message%}!{%else%}✈{%endif%}</div>
+      <div class="notification-content">
+        <p class="notification-title">{%if 'following' in n.message%}New follower{%else%}New Flight Post{%endif%}</p>
+        <p class="notification-text">  <a href="/profile/{{n.sender}}" style="font-size: 15px;font-weight: 900;font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: var(--accent);"><strong> {{n.sender}}</strong></a>{{n.message | cut:n.sender}}</p>
+      </div>
+      <time class="notification-time">{{n.created_at | timesince}} ago</time>
+    </article>
+    {%else%}
+   
+    <article  class="notification-card" role="listitem" tabindex="0">
+    
+      <div class="notification-icon">{%if 'following' in n.message%}!{%else%}✈{%endif%}</div>
+      <div class="notification-content">
+        <p class="notification-title">{%if 'following' in n.message%}New follower{%else%}New Flight Post{%endif%}</p>
+        <p class="notification-text"> <a href="/profile/{{n.sender.username}}" style="font-size: 15px;font-weight: 900;font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: var(--deep-blue);"><strong> {{n.sender}}</strong></a> {{n.message | cut:n.sender.username }}</p>
+      </div>
+      <time class="notification-time">{{n.created_at | timesince}} ago</time>
+    </article>
+
+    {%endif%}
+    {%empty%}
+    <article>No Notifications</article>
+    {%endfor%}
+  </div>
+
+</main>
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-bottom-nav">
+  <a href="/" class="nav-item"><i class="fas fa-home"></i></a>
+  <a href="/search/find_users" class="nav-item"><i class="fa fa-users"></i></a>
+  <a href="/search/flights" class="nav-item"><i class="fas fa-search"></i></a>
+  <a href="/add" class="nav-item center-btn"><i class="fas fa-plane"></i></a>
+  <a href="/notifications" class="nav-item notifiy-btn"><i class="fa fa-bell" aria-hidden="true"><span class="badge" id="notifcountmobile"></span></i></a>
+  <a href="/chat/inbox/" class="nav-item"><i class="fa fa-comment" aria-hidden="true"></i></a>
+  <a href="/profile/{{request.user}}" class="nav-item"><i class="fas fa-user"></i></a>
+</nav>
+</body>
+</html>

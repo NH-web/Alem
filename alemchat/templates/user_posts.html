@@ -1,0 +1,24 @@
+<h2>Your Travel Posts</h2>
+
+<ul><h1>{{title}}</h1>
+    {% for post in posts%}
+        {%if request.user == post.post.user%}
+        <li>
+            {{ post.departure_country }} → {{ post.destination_country }} on {{ post.departure_date }}
+            <a href="{% url 'interested_users' post.id %}">View Requests</a>
+        </li>
+        {%else%}
+        <li>
+            {{ post..post.departure_country }} → {{ post.post.destination_country }} on {{ post.post.departure_date }}
+            <a href="#">Messages</a>
+        </li>
+        {%endif%}
+    {% endfor %}
+
+
+</ul>
+<ul>
+    {%for p in posts%}
+    {{p.post}}
+    {%endfor%}
+</ul>

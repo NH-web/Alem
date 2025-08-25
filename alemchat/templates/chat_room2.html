@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Messages — AcrossLandsExpressMail</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  
+</head>
+<body>
+{%if request.is_mobile%}
+
+    <section class="chat-window" aria-label="Chat messages window">
+      <header class="chat-header" aria-live="polite" aria-atomic="true">
+        <div class="chat-avatar" aria-hidden="true" style="width: 48px; height: 48px; border-radius: 50%;overflow: hidden;"><img src="{{other.userprofile.profile_picture.url}}" alt="pp" style="width: 100%;height: 100%; object-fit: contain;"> </div>
+        <div class="chat-username">{{other.username}}</div>
+      </header>
+      <div class="messages" id="messages" tabindex="0" role="log" aria-live="polite" aria-relevant="additions">
+        {%for m in initial_messages%}
+        <div class="message {%if m.sender_id == request.user.id %}sent{%else%}received{%endif%}" id="message" aria-label="Your sent message" data-id="{{ m.id }}">
+         {{m.text | linebreaksbr}}
+        </div>
+         {%endfor%}
+      </div>
+
+     
+
+      <form class="message-input" id="composer">
+        {%csrf_token%}
+        <input name="text" placeholder="Type your message..." aria-label="Message input" required autocomplete="off" id="text"/>
+        <button type="submit" aria-label="Send message">Send</button>
+      </form>
+    </section>
+{%else%}
+<style>
+    :root {
+      --bg: #f2f4f7;
+      --surface: #ffffff;
+      --deep-blue: #0b3d91;
+      --muted: #6b7280;
+      --accent: #ff7a18;
+      --card-shadow: 0 10px 30px rgba(11, 61, 145, 0.1);
+      --radius: 14px;
+      --max-width: 1100px;
+    }
+
+    /* Reset */
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: #0f1724;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-size: 17px;
+      line-height: 1.6;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(8px);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.7));
+      border-bottom: 1px solid rgba(15, 23, 36, 0.07);
+      padding: 18px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: var(--deep-blue);
+      color: white;
+      font-weight: 700;
+      font-family: Poppins, Inter;
+      box-shadow: 0 8px 24px rgba(11, 61, 145, 0.15);
+      font-size: 22px;
+      user-select: none;
+    }
+    .nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .nav a {
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .btn-login {
+      background: transparent;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1.8px solid transparent;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .btn-login:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 8px 18px rgba(255, 122, 24, 0.3);
+    }
+    .btn-primary:hover {
+      background: #e06910;
+      box-shadow: 0 12px 26px rgba(224, 105, 16, 0.4);
+    }
+
+    /* Layout */
+    .wrap {
+      max-width: var(--max-width);
+      margin: 44px auto 56px auto;
+      padding: 0 28px;
+      height: calc(100vh - 112px); /* header + margin */
+      display: flex;
+      gap: 32px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 300px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Profile info */
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 24px 28px;
+      border-bottom: 1px solid rgba(15,23,36,0.08);
+    }
+    .profile-pic {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+      font-weight: 700;
+      color: var(--deep-blue);
+      font-size: 24px;
+      display: grid;
+      place-items: center;
+      user-select: none;
+      flex-shrink: 0;
+    }
+    .profile-username {
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--deep-blue);
+    }
+
+    /* Conversations list */
+    .conversations {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 0;
+    }
+    .conversation {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 24px;
+      cursor: pointer;
+      transition: background 0.25s ease;
+      border-left: 4px solid transparent;
+    }
+    .conversation:hover,
+    .conversation.active {
+      background: #fef4e6;
+      border-left-color: var(--accent);
+    }
+    .conv-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+      font-weight: 700;
+      color: var(--deep-blue);
+      font-size: 20px;
+      display: grid;
+      place-items: center;
+      user-select: none;
+      flex-shrink: 0;
+    }
+    .conv-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .conv-username {
+      font-weight: 600;
+      color: var(--deep-blue);
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    .conv-last-message {
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .conv-time {
+      font-size: 12px;
+      color: var(--muted);
+      flex-shrink: 0;
+      margin-left: 8px;
+    }
+
+    /* Chat window */
+    .chat-window {
+      flex: 1;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Chat header */
+    .chat-header {
+      padding: 24px 28px;
+      border-bottom: 1px solid rgba(15,23,36,0.08);
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--deep-blue);
+    }
+    .chat-header .chat-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: var(--deep-blue);
+      font-size: 20px;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    /* Messages container */
+    .messages {
+      flex: 1;
+      padding: 24px 28px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: #f9fafb;
+    }
+
+    /* Individual messages */
+    .message {
+      max-width: 65%;
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      font-size: 16px;
+      line-height: 1.4;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      word-wrap: break-word;
+    }
+    .message.sent {
+      align-self: flex-end;
+      background: var(--accent);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+    .message.received {
+      align-self: flex-start;
+      background: var(--surface);
+      color: #0f1724;
+      border-bottom-left-radius: 4px;
+    }
+
+    /* Message input */
+    .message-input {
+      padding: 18px 28px;
+      border-top: 1px solid rgba(15,23,36,0.08);
+      display: flex;
+      gap: 12px;
+      background: var(--surface);
+    }
+    .message-input input {
+      flex: 1;
+      resize: none;
+      border-radius: var(--radius);
+      border: 1.8px solid rgba(15,23,36,0.15);
+      padding: 14px 18px;
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.4;
+      transition: border-color 0.3s ease;
+      min-height: 48px;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+    .message-input textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(255,122,24,0.4);
+    }
+    .message-input button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      padding: 0 28px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 8px 22px rgba(255,122,24,0.35);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+    .message-input button:hover {
+      background: #e06910;
+      box-shadow: 0 12px 30px rgba(224,105,16,0.45);
+    }
+
+    /* Scrollbar styling for sidebar and messages */
+    .conversations::-webkit-scrollbar,
+    .messages::-webkit-scrollbar {
+      width: 8px;
+    }
+    .conversations::-webkit-scrollbar-thumb,
+    .messages::-webkit-scrollbar-thumb {
+      background-color: rgba(11, 61, 145, 0.15);
+      border-radius: 4px;
+    }
+    .conversations::-webkit-scrollbar-track,
+    .messages::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+  </style>
+{% include 'navbar2.html' %}
+
+  <main class="wrap" role="main" aria-label="Messages">
+
+    <aside class="sidebar" aria-label="Conversations and user profile">
+      <div class="profile" aria-label="Logged in user profile">
+        <div class="pcircle" style="background: black;width: 48px; height: 48px; border-radius: 50%; overflow: hidden;">
+            <img src="{{request.user.userprofile.profile_picture.url}}" alt="pp" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div class="profile-username">{{request.user}}</div>
+      </div>
+
+      
+      <nav class="conversations" aria-label="User conversations list" role="list">
+        {%for item in chat_list%}
+        {%if item.other_user.username == other.username %}
+        <div class="conversation active" role="listitem" tabindex="0" aria-current="true" aria-label="Conversation with HM" >
+        {%else%}
+        <div class="conversation" role="listitem" tabindex="0" aria-current="true" aria-label="Conversation with HM">
+        {%endif%}
+        <div class="conv-avatar" style="background: black;width: 48px; height: 48px; border-radius: 50%; overflow: hidden;" onclick="redirectToPage('/profile/{{item.other_user.username}}')">
+            <img src="{{item.other_user.userprofile.profile_picture.url}}" alt="pp" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+          <div class="conv-info">
+            <div class="conv-username"><a href="{% url 'chat_room' item.chat.id %}"> {{item.other_user.username}}</a></div>
+            <div class="conv-last-message"><a href="{% url 'chat_room' item.chat.id %}">{{item.last}}</a></div>
+          </div>
+          <time class="conv-time" datetime="2025-08-11T10:30"><a href="{% url 'chat_room' item.chat.id %}">10:30 AM</a></time>
+        </div>
+        {%endfor%}
+        
+    </aside>
+
+    <section class="chat-window" aria-label="Chat messages window">
+      <header class="chat-header" aria-live="polite" aria-atomic="true">
+        <div class="chat-avatar" aria-hidden="true" style="width: 48px; height: 48px; border-radius: 50%;overflow: hidden;"><img src="{{other.userprofile.profile_picture.url}}" alt="pp" style="width: 100%;height: 100%; object-fit: contain;"> </div>
+        <div class="chat-username">{{other.username}}</div>
+      </header>
+      <div class="messages" id="messages" tabindex="0" role="log" aria-live="polite" aria-relevant="additions">
+        {%for m in initial_messages%}
+        <div class="message {%if m.sender_id == request.user.id %}sent{%else%}received{%endif%}" id="message" aria-label="Your sent message" data-id="{{ m.id }}">
+         {{m.text | linebreaksbr}}
+        </div>
+         {%endfor%}
+      </div>
+
+     
+
+      <form class="message-input" id="composer">
+        {%csrf_token%}
+        <input name="text" placeholder="Type your message..." aria-label="Message input" required autocomplete="off" id="text"/>
+        <button type="submit" aria-label="Send message">Send</button>
+      </form>
+    </section>
+
+  </main>
+  {%endif%}
+<script>
+     const chatId = {{chat.id}};
+    const msgsE1 = document.getElementById('messages');
+    const inputE1 = document.getElementById('text');
+    const formE1 = document.getElementById('composer');
+    // CSRF helper
+    function getCookie(name){
+        const v = document.cookie.split(';').map(c=>c.trim()).find(c=>c.startsWith(name+'='));
+        return v ? decodeURIComponent(v.split('=')[1]) : '';
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    let lastId = (function(){
+        const last = msgsE1.querySelector('.message:last-child');
+        return last ? parseInt(last.getAttribute('data-id')) : 0;
+    })();    
+function appendMessage(m) {
+    const row = document.createElement('div');
+    row.className = 'message ' + (m.mine ? 'sent' : 'received');
+    row.setAttribute('data-id', m.id);
+    row.textContent = m.text; // ✅ directly add text, no nested div
+    msgsE1.appendChild(row);
+    msgsE1.scrollTop = msgsE1.scrollHeight;
+}
+    // Poll for new messages + typing
+    async function poll() {
+        try{
+            const url = `{% url 'api_fetch_messages' chat.id %}?after_id=${lastId}`;
+            const res = await fetch(url, {credentials:"same-origin"});
+            if (!res.ok) return;
+            const data = await res.json();
+            if (Array.isArray(data.messages)) {
+                data.messages.forEach(m => {
+                    appendMessage(m);
+                    lastId = Math.max(lastId, m.id);
+                });
+            }
+        } catch (e) { /* silent */ }
+    }
+    setInterval(poll, 1000);
+    window.addEventListener('focus', poll);
+    document.addEventListener('visibilitychange', ()=> { if (!document.hidden) poll(); });
+
+    //send message 
+    formE1.addEventListener('submit', async (e) =>{
+        e.preventDefault();
+        const text = inputE1.value.trim();
+        if (!text) return;
+        inputE1.value = '';
+        const formData = new FormData();
+        formData.append('text', text);
+        const res = await fetch(`{% url 'api_send_message' chat.id %}`, {
+            method:'POST',
+            credentials:'same-origin',
+            headers: {'X-CSRFToken': csrftoken},
+            body: formData
+        });
+        if (res.ok) {
+            const m = await res.json();
+            appendMessage({ ...m, mine: true });
+            lastId = Math.max(lastId, m.id);
+        }
+    });
+    //Auto-Scroll on load
+    msgsE1.scrollTop = msgsE1.scrollHeight;
+</script>
+</body>
+</html>

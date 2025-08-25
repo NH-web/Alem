@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AcrossLandsExpressMail — Find Friend</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f2f4f7;
+      --surface:#ffffff;
+      --deep-blue:#0b3d91;
+      --muted:#6b7280;
+      --accent:#ff7a18;
+      --card-shadow: 0 6px 18px rgba(11,61,145,0.06);
+      --radius:12px;
+    }
+
+    /* Reset / base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--bg);
+      color:#0f1724;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+
+    a{color:inherit; text-decoration:none}
+
+    /* Header */
+    .site-header{
+      position:sticky; top:0; z-index:40;
+      backdrop-filter: blur(6px);
+      background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.55));
+      border-bottom:1px solid rgba(15,23,36,0.04);
+      padding:14px 20px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo {
+      width:44px; height:44px; border-radius:10px; display:grid; place-items:center;
+      background:var(--deep-blue); color:white; font-weight:700; font-family:Poppins, Inter;
+      box-shadow: 0 6px 18px rgba(11,61,145,0.12);
+    }
+    .nav{
+      display:flex; gap:18px; align-items:center;
+    }
+    .nav a{color:var(--muted); font-weight:600}
+    .btn-login{background:transparent; padding:8px 12px; border-radius:8px; border:1px solid transparent; font-weight:600}
+    .btn-primary{background:var(--accent); color:white; padding:10px 14px; border-radius:10px; font-weight:700}
+
+    /* Layout */
+    .wrap{max-width:700px; margin:28px auto; padding:0 20px}
+
+    /* Search form */
+    form.search-bar {
+      background: var(--surface);
+      padding: 18px 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+    form.search-bar input[type="text"] {
+      border: 1px solid rgba(15,23,36,0.06);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      background: transparent;
+      font-family: inherit;
+      color: #0f1724;
+      flex-grow: 1;
+      min-width: 180px;
+    }
+    form.search-bar .search-btn {
+      background: var(--deep-blue);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    form.search-bar .search-btn:hover {
+      background: #0841c2;
+    }
+
+    /* Results */
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--surface);
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+    }
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg,#dbeafe,#bfdbfe);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: var(--deep-blue);
+      flex-shrink: 0;
+      font-size: 18px;
+      user-select: none;
+    }
+    .meta {
+      flex: 1;
+    }
+    .username {
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--deep-blue);
+    }
+    .location {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    .btn-follow {
+      background: var(--accent);
+      color: white;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      flex-shrink: 0;
+    }
+    .btn-follow.unfollow {
+      background: #ccc;
+      color: #444;
+    }
+    .btn-follow:hover:not(.unfollow) {
+      background: #e06700;
+    }
+    .btn-follow.unfollow:hover {
+      background: #999;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      form.search-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      form.search-bar input[type="text"] {
+        min-width: 100%;
+      }
+      .card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .btn-follow {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+{%include 'navbar2.html'%}
+
+<main class="wrap" role="main" aria-label="Find Friend">
+
+  <form class="search-bar" role="search" aria-label="Search friends" method="post" action="">
+    {%csrf_token%}
+    <input type="text" name="username" placeholder="Search by username" aria-label="Search by username" required>
+    <button type="submit" class="search-btn">Search</button>
+  </form>
+
+  <section aria-live="polite" aria-label="Friend search results">
+    <div class="card-list" id="results">
+      <!-- Example user -->
+      {%if results%} 
+        {%for i in results%}
+          <article class="card">
+            <div class="avatar"><div class="pcircle" style=" width: 56px;height: 56px;overflow: hidden;border-radius: 50%;"><img src="{{i.userprofile.profile_picture.url}}" alt="pp" style=" width: 100%;height: 100%;object-fit: cover;"></div></div>
+        <div class="meta">
+           {% if i.userprofile.is_verified%}
+                <div class="profilename" style="font-weight: 700; font-size: 16px; color: hsl(0, 0%, 6%);">{{i.username}} <span class="material-symbols-outlined" style="color: hsl(128, 92%, 42%); font-size: 15px;">verified</span></div>
+                {%else%}
+                <div class="profilename" style="font-weight: 700; font-size: 16px; color: hsl(0, 0%, 6%);">{{i.username}} </div>
+                {%endif%}
+          <div class="location">{{i.userprofile.bio}}</div>
+        </div>
+        <a href="/profile/{{i.username}}" class="btn-follow">Profile</a>
+      </article>
+      {%endfor%}
+      {%else%}
+      <article style="display: flex;align-items: center;justify-content: center;">
+        <span style="opacity: 0.7;">Nothing to view here</span>
+      </article>
+
+      {%endif%}
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

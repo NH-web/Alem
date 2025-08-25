@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AcrossLandsExpressMail — Login</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:#f2f4f7;
+      --surface:#ffffff;
+      --deep-blue:#0b3d91;
+      --muted:#6b7280;
+      --accent:#ff7a18;
+      --card-shadow: 0 6px 18px rgba(11,61,145,0.06);
+      --radius:12px;
+    }
+
+    * { box-sizing: border-box; }
+    body, html {
+      margin: 0; padding: 0; height: 100%;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color: #0f1724;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    a { text-decoration: none; color: var(--accent); }
+
+    .login-container {
+      background: var(--surface);
+      padding: 32px 28px;
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h2 {
+      margin: 0 0 24px;
+      font-family: Poppins, Inter;
+      color: var(--deep-blue);
+      font-weight: 700;
+      text-align: center;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      padding: 10px 14px;
+      font-size: 15px;
+      border: 1px solid rgba(15,23,36,0.1);
+      border-radius: 10px;
+      outline-offset: 2px;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: var(--accent);
+    }
+
+    button {
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+      padding: 12px 0;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background: #e06700;
+    }
+
+    .form-footer {
+      margin-top: 14px;
+      font-size: 14px;
+      text-align: center;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+  <section class="login-container" aria-label="Login form">
+    <h2>Login to SendWithTravel</h2>
+    <form action="#" method="POST" autocomplete="off">
+      <label for="email">Email address</label>
+      <input id="email" name="email" type="email" required placeholder="you@example.com" />
+
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" required placeholder="Your password" />
+
+      <button type="submit">Login</button>
+    </form>
+    <div class="form-footer">
+      Don't have an account? <a href="register.html">Register here</a>
+    </div>
+  </section>
+
+</body>
+</html>

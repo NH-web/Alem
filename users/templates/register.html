@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SendWithTravel — Register</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:#f2f4f7;
+      --surface:#ffffff;
+      --deep-blue:#0b3d91;
+      --muted:#6b7280;
+      --accent:#ff7a18;
+      --card-shadow: 0 6px 18px rgba(11,61,145,0.06);
+      --radius:12px;
+    }
+
+    * { box-sizing: border-box; }
+    body, html {
+      margin: 0; padding: 0; height: 100%;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color: #0f1724;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    a { text-decoration: none; color: var(--accent); }
+
+    .register-container {
+      background: var(--surface);
+      padding: 32px 28px;
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      max-width: 600px;
+      width: 100%;
+    }
+
+    h2 {
+      margin: 0 0 24px;
+      font-family: Poppins, Inter;
+      color: var(--deep-blue);
+      font-weight: 700;
+      text-align: center;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    select {
+      padding: 10px 14px;
+      font-size: 15px;
+      border: 1px solid rgba(15,23,36,0.1);
+      border-radius: 10px;
+      outline-offset: 2px;
+      transition: border-color 0.3s ease;
+      width: 100%;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    select:focus {
+      border-color: var(--accent);
+    }
+
+    /* Special styles for phone + button row */
+    .phone-container {
+      grid-column: 1 / 2;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .phone-container input {
+      flex: 1;
+    }
+    .get-code-btn {
+      background: var(--deep-blue);
+      color: white;
+      font-weight: 700;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color 0.3s ease;
+      font-size: 14px;
+    }
+    .get-code-btn:hover {
+      background: #063170;
+    }
+
+    /* Verification code input placed in 2nd column next to phone */
+    #verification-code {
+      grid-column: 2 / 3;
+    }
+
+    /* Submit button takes full width across 2 columns */
+    button[type="submit"] {
+      grid-column: 1 / 3;
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+      padding: 12px 0;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
+
+    button[type="submit"]:hover {
+      background: #e06700;
+    }
+
+    /* Footer under the form */
+    .form-footer {
+      margin-top: 14px;
+      font-size: 14px;
+      text-align: center;
+      color: var(--muted);
+      grid-column: 1 / 3;
+    }
+
+    /* Responsive: stack inputs vertically on narrow screens */
+    @media (max-width: 764px) {
+      .register-container{
+        margin-top: 100%;
+      }
+      form {
+        grid-template-columns: 1fr;
+      }
+      .phone-container {
+        grid-column: auto;
+      }
+      #verification-code {
+        grid-column: auto;
+      }
+      button[type="submit"] {
+        grid-column: auto;
+      }
+      .form-footer {
+        grid-column: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="register-container" aria-label="Registration form">
+    <h2>Create your account</h2>
+    <form action="#" method="POST" autocomplete="off">
+        {%csrf_token%}
+        {% if messages %}
+  <div class="error">
+    {% for message in messages %}
+      <p style="color:red;">{{ message }}</p>
+    {% endfor %}
+  </div>
+{% endif %}
+      <div>        
+        <label for="firstname">First Name</label>
+        {{form.first_name}}
+      </div>
+       {% if form.first_name.errors %}
+    <div class="error">
+      {% for error in form.first_name.errors %}
+        <p style="color:red;">{{ error }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+      <div>
+        <label for="lastname">Last Name</label>
+        {{form.last_name}}
+      </div>
+       {% if form.last_name.errors %}
+    <div class="error">
+      {% for error in form.last_name.errors %}
+        <p style="color:red;">{{ error }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+      <div>
+        <label for="username">Username</label>
+        {{form.username}}
+      </div>
+       {% if form.username.errors %}
+    <div class="error">
+      {% for error in form.username.errors %}
+        <p style="color:red;">{{ error }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+      <div>
+        <label for="email">Email address</label>
+        <input type="email" disabled name="email" id="email" value="{{email}}">
+      </div>
+       {% if form.email.errors %}
+    <div class="error">
+      {% for error in form.email.errors %}
+        <p style="color:red;">{{ error }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+      <div>
+        <label for="password">Password</label>
+        {{form.password1}}
+      </div>
+       {% if form.password1.errors %}
+    <div class="error">
+      {% for error in form.password1.errors %}
+        <p style="color:red;">{{ error }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+      <div>
+        <label for="password-confirm">Confirm password</label>
+        {{form.password2}}      
+      </div>
+       {% if form.password2.errors %}
+    <div class="error">
+      {% for error in form.password2.errors %}
+        <p style="color:red;">{{ error }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+      <button type="submit">Register</button>
+    </form>
+
+    <div class="form-footer">
+      Already have an account? <a href="/accounts/login/">Login here</a>
+    </div>
+  </section>
+
+</body>
+</html>
+
+<p id="username-feedback" style="color:red; font-size:14px;"></p>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const usernameInput = document.getElementById("username");
+    const feedback = document.getElementById("username");
+
+    usernameInput.addEventListener("input", function () {
+        const username = usernameInput.value;
+
+        if (username.length < 3) {
+            feedback.textContent = "";
+            return;
+        }
+
+        fetch(`/check-username/?username=${username}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_taken) {
+                    feedback.Label = "Username is already taken.";
+                    feedback.style.borderColor = "red";
+                } else {
+                    feedback.textContent = "✅ Username is available.";
+                    feedback.style.borderColor = "green";
+                }
+            });
+    });
+});
+</script>

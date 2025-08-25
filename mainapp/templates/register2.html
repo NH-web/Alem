@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AcrossLandsExpressMail — Register</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:#f2f4f7;
+      --surface:#ffffff;
+      --deep-blue:#0b3d91;
+      --muted:#6b7280;
+      --accent:#ff7a18;
+      --card-shadow: 0 6px 18px rgba(11,61,145,0.06);
+      --radius:12px;
+    }
+
+    * { box-sizing: border-box; }
+    body, html {
+      margin: 0; padding: 0; height: 100%;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color: #0f1724;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    a { text-decoration: none; color: var(--accent); }
+
+    .register-container {
+      background: var(--surface);
+      padding: 32px 28px;
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      max-width: 600px;
+      width: 100%;
+    }
+
+    h2 {
+      margin: 0 0 24px;
+      font-family: Poppins, Inter;
+      color: var(--deep-blue);
+      font-weight: 700;
+      text-align: center;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    select {
+      padding: 10px 14px;
+      font-size: 15px;
+      border: 1px solid rgba(15,23,36,0.1);
+      border-radius: 10px;
+      outline-offset: 2px;
+      transition: border-color 0.3s ease;
+      width: 100%;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    select:focus {
+      border-color: var(--accent);
+    }
+
+    /* Special styles for phone + button row */
+    .phone-container {
+      grid-column: 1 / 2;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .phone-container input {
+      flex: 1;
+    }
+    .get-code-btn {
+      background: var(--deep-blue);
+      color: white;
+      font-weight: 700;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color 0.3s ease;
+      font-size: 14px;
+    }
+    .get-code-btn:hover {
+      background: #063170;
+    }
+
+    /* Verification code input placed in 2nd column next to phone */
+    #verification-code {
+      grid-column: 2 / 3;
+    }
+
+    /* Submit button takes full width across 2 columns */
+    button[type="submit"] {
+      grid-column: 1 / 3;
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+      padding: 12px 0;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
+
+    button[type="submit"]:hover {
+      background: #e06700;
+    }
+
+    /* Footer under the form */
+    .form-footer {
+      margin-top: 14px;
+      font-size: 14px;
+      text-align: center;
+      color: var(--muted);
+      grid-column: 1 / 3;
+    }
+
+    /* Responsive: stack inputs vertically on narrow screens */
+    @media (max-width: 520px) {
+      form {
+        grid-template-columns: 1fr;
+      }
+      .phone-container {
+        grid-column: auto;
+      }
+      #verification-code {
+        grid-column: auto;
+      }
+      button[type="submit"] {
+        grid-column: auto;
+      }
+      .form-footer {
+        grid-column: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="register-container" aria-label="Registration form">
+    <h2>Create your account</h2>
+    <form action="#" method="POST" autocomplete="off">
+      
+      <div>
+        <label for="firstname">First Name</label>
+        <input id="firstname" name="firstname" type="text" required placeholder="First name" />
+      </div>
+
+      <div>
+        <label for="lastname">Last Name</label>
+        <input id="lastname" name="lastname" type="text" required placeholder="Last name" />
+      </div>
+
+      <div>
+        <label for="gender">Gender</label>
+        <select id="gender" name="gender" required>
+          <option value="" disabled selected>Select gender</option>
+          <option value="female">Female</option>
+          <option value="male">Male</option>
+          <option value="nonbinary">Non-binary</option>
+          <option value="prefer-not-to-say">Prefer not to say</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" required placeholder="Choose a username" />
+      </div>
+
+      <div class="phone-container">
+        <div style="flex:1;">
+          <label for="phone">Phone Number</label>
+          <input id="phone" name="phone" type="text" required placeholder="+123 456 7890" />
+        </div>
+        <button type="button" class="get-code-btn" aria-label="Get verification code">Get Code</button>
+      </div>
+
+      <div>
+        <label for="verification-code">Verification Code</label>
+        <input id="verification-code" name="verification-code" type="text" required placeholder="Enter code" />
+      </div>
+
+      <div>
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email" required placeholder="you@example.com" />
+      </div>
+
+      <div>
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required placeholder="Create a password" />
+      </div>
+
+      <div>
+        <label for="password-confirm">Confirm password</label>
+        <input id="password-confirm" name="password-confirm" type="password" required placeholder="Confirm your password" />
+      </div>
+
+      <div>
+        <label for="location-city">Current Location - City</label>
+        <input id="location-city" name="location-city" type="text" required placeholder="City" />
+      </div>
+
+      <div>
+        <label for="location-state">Current Location - State</label>
+        <input id="location-state" name="location-state" type="text" required placeholder="State" />
+      </div>
+
+      <button type="submit">Register</button>
+    </form>
+
+    <div class="form-footer">
+      Already have an account? <a href="login.html">Login here</a>
+    </div>
+  </section>
+
+</body>
+</html>

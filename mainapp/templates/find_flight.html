@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AcrossLandsExpressMail — Find Flights</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f2f4f7;
+      --surface:#ffffff;
+      --deep-blue:#0b3d91;
+      --muted:#6b7280;
+      --accent:#ff7a18;
+      --card-shadow: 0 6px 18px rgba(11,61,145,0.06);
+      --radius:12px;
+    }
+
+    /* Reset / base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--bg);
+      color:#0f1724;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+
+    a{color:inherit; text-decoration:none}
+
+    /* Header */
+    .site-header{
+      position:sticky; top:0; z-index:40;
+      backdrop-filter: blur(6px);
+      background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.55));
+      border-bottom:1px solid rgba(15,23,36,0.04);
+      padding:14px 20px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo {
+      width:44px; height:44px; border-radius:10px; display:grid; place-items:center;
+      background:var(--deep-blue); color:white; font-weight:700; font-family:Poppins, Inter;
+      box-shadow: 0 6px 18px rgba(11,61,145,0.12);
+    }
+    .nav{
+      display:flex; gap:18px; align-items:center;
+    }
+    .nav a{color:var(--muted); font-weight:600}
+    .btn-login{background:transparent; padding:8px 12px; border-radius:8px; border:1px solid transparent; font-weight:600}
+    .btn-primary{background:var(--accent); color:white; padding:10px 14px; border-radius:10px; font-weight:700}
+
+    /* Layout */
+    .wrap{max-width:800px; margin:28px auto; padding:0 20px}
+
+    /* Search form */
+    form.search-bar {
+      background: var(--surface);
+      padding: 18px 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+    form.search-bar select,
+    form.search-bar input[type="date"] {
+      border: 1px solid rgba(15,23,36,0.06);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      background: transparent;
+      font-family: inherit;
+      color: #0f1724;
+      width: 8rem;
+      flex-grow: 1;
+    }
+    form.search-bar .search-btn {
+      background: var(--deep-blue);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    form.search-bar .search-btn:hover {
+      background: #0841c2;
+    }
+
+    /* Flight results */
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .card {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      background: var(--surface);
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+    }
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg,#dbeafe,#bfdbfe);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: var(--deep-blue);
+      flex-shrink: 0;
+    }
+    .meta {
+      flex: 1;
+    }
+    .route {
+      font-weight: 700;
+      color: #0b3d91;
+      font-size: 17px;
+    }
+    .sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    .btn-contact {
+      background: #0b6fd8;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+      border: none;
+    }
+    .btn-contact:hover {
+      background: #0956b3;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      form.search-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      form.search-bar select,
+      form.search-bar input[type="date"] {
+        min-width: 100%;
+        flex-grow: 0;
+      }
+      .card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .btn-contact {
+        align-self: stretch;
+        width: 100%;
+      }
+    }
+    /* Extra responsive rules */
+@media (max-width:480px) {
+  h1 {
+    font-size: 22px;
+  }
+  .addform {
+    gap: 14px;
+  }
+  label {
+    font-size: 13px;
+  }
+  input, select, textarea {
+    font-size: 14px;
+  }
+  /* Stack range slider + output */
+  #weight, #weight + output {
+    width: 100%;
+    display: block;
+    margin-top: 6px;
+  }
+  .btn-submit {
+    font-size: 15px;
+    padding: 12px 0;
+  }
+  .btn-cancel {
+    font-size: 14px;
+    display: block;
+    margin-top: 12px;
+  }
+}
+
+  </style>
+</head>
+<body>
+{%include 'navbar2.html'%}
+
+<main class="wrap" role="main" aria-label="Find Flights">
+
+  <form class="search-bar" action="" method="post" role="search" aria-label="Search flights">
+    {%csrf_token%}
+    {{form.departure_country}}
+    <span class="material-symbols-outlined" style="transform: rotate(90deg);">flight</span>
+    {{form.destination_country}}
+    <input type="date" name="departure_date" min="{{today | date:'Y-m-d'}}">
+    <input type="range" name="max_weight" value="10" max="62" step="1" oninput="this.nextElementSibling.value = this.value"><output>10</output><span>Kg</span>
+    <button type="submit" class="search-btn">Search</button>
+  </form>
+
+  <section aria-live="polite" aria-label="Search results">
+    <div class="card-list" id="results">
+      <!-- Example flight post -->
+       {%for i in quaryset%}
+      <article class="card">
+            <div class="avatar"><div class="pcircle" style=" width: 56px;height: 56px;overflow: hidden;border-radius: 50%;"><img src="{{i.user.userprofile.profile_picture.url}}" alt="pp" style=" width: 100%;height: 100%;object-fit: cover;"></div></div>
+        <div class="meta">
+            {% if i.user.userprofile.is_verified%}
+                <div class="profilename" style="font-weight: 700; font-size: 16px; color: hsl(0, 0%, 6%);">{{i.user}} <span class="material-symbols-outlined" style="color: hsl(128, 92%, 42%); font-size: 15px;">verified</span></div>
+                {%else%}
+                <div class="profilename" style="font-weight: 700; font-size: 16px; color: hsl(0, 0%, 6%);">{{i.user}} </div>
+                {%endif%}
+            <div class="route">{{i.departure_country | default:"N/A"}} <span class="material-symbols-outlined" style="transform: rotate(90deg);">flight</span> {{i.destination_country | default:"N/A"}}</div>
+        <div class="sub">{{i.departure_date}} — {{i.max_weight}} kg available  <span style="font-size: 10px; opacity: 0.7;">'{{i.note}}'</span></div>
+        </div>
+        <p style="font-size: 9px; opacity: 0.7;">{{i.created_at | timesince}} ago</p>
+        {%if request.user != i.user %}
+              <a href="/profile/{{i.user}}" style="border: none; background: #0b6fd8; width: fit-content; padding: .7rem; border-radius: 1.6rem;margin-left: 2rem; color: #eef2ff;">Connect</a>
+        {%else%}
+              <a href="/post/{{i.id}}/delete/" style="border: none; background: #ed0707c4; width: fit-content; padding: .7rem; border-radius: 1.6rem;margin-left: 2rem; color: #eef2ff;">Cancel</a>
+        {%endif%}
+      </article>
+      {%empty%}
+      <p style="font-size: 20px; opacity: 0.6; margin-top: 9rem;text-align: center;">Nothing to view!</p>
+      {%endfor%}
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

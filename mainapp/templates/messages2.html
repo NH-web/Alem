@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AcrossLandsExpressMail — Messages</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f2f4f7;
+      --surface:#ffffff;
+      --deep-blue:#0b3d91;
+      --muted:#6b7280;
+      --accent:#ff7a18;
+      --card-shadow: 0 6px 18px rgba(11,61,145,0.06);
+      --radius:12px;
+    }
+
+    /* Reset / base */
+    *{box-sizing:border-box;}
+    html, body {height:100%; margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:var(--bg); color:#0f1724; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; line-height:1.45;}
+
+    a{color:inherit; text-decoration:none;}
+
+    /* Container */
+    .wrap {
+      max-width: 1100px;
+      margin: 28px auto;
+      display: flex;
+      gap: 24px;
+      background: var(--bg);
+      height: 80vh;
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+    }
+
+    /* Sidebar (users list) */
+    .sidebar {
+      width: 300px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      padding: 16px;
+      overflow-y: auto;
+    }
+    .sidebar h3 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-family: Poppins, Inter;
+      color: var(--deep-blue);
+      font-weight: 700;
+      font-size: 20px;
+    }
+    .user-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .user-item {
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--deep-blue);
+      margin-bottom: 10px;
+      user-select: none;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .user-item:hover, .user-item.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* Chat window */
+    .chat-window {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      min-height: 100%;
+    }
+
+    /* Chat header */
+    .chat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .back-btn {
+      display: none; /* show on mobile */
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--deep-blue);
+      font-weight: 700;
+      user-select: none;
+      padding: 0;
+    }
+    .chat-username {
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--deep-blue);
+      flex-grow: 1;
+    }
+
+    /* Messages container */
+    .chat-messages {
+      flex-grow: 1;
+      overflow-y: auto;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+      padding: 12px 0;
+      font-size: 14px;
+      color: #222;
+    }
+    .message {
+      margin-bottom: 14px;
+      max-width: 70%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: var(--bg);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    .message.sent {
+      margin-left: auto;
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 2px 6px rgba(255,122,24,0.4);
+    }
+
+    /* Input form */
+    .chat-input-form {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .chat-input-form input[type="text"] {
+      flex-grow: 1;
+      padding: 12px 16px;
+      font-size: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(15,23,36,0.15);
+      outline-offset: 2px;
+      font-family: inherit;
+    }
+    .chat-input-form button {
+      background: var(--deep-blue);
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    .chat-input-form button:hover {
+      background: #0943a2;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .wrap {
+        flex-direction: column;
+        max-width: 100%;
+        margin: 0 auto;
+        gap: 0;
+        height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .sidebar, .chat-window {
+        width: 100%;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 0 16px;
+        min-height: auto;
+        height: 100%;
+        overflow: hidden;
+      }
+      .chat-window {
+        display: none;
+        flex-direction: column;
+        padding: 16px;
+      }
+      .back-btn {
+        display: block;
+      }
+      /* When chat active: show chat, hide sidebar */
+      .wrap.show-chat .sidebar {
+        display: none;
+      }
+      .wrap.show-chat .chat-window {
+        display: flex;
+        height: 100vh;
+        padding-top: 40px; /* space for header */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="wrap">
+
+    <aside class="sidebar" aria-label="User list">
+      <h3>Users</h3>
+      <ul class="user-list" role="list">
+        <li class="user-item" data-username="Alice">Alice</li>
+        <li class="user-item" data-username="Bob">Bob</li>
+        <li class="user-item" data-username="Charlie">Charlie</li>
+        <li class="user-item" data-username="Diana">Diana</li>
+        <li class="user-item" data-username="Evan">Evan</li>
+      </ul>
+    </aside>
+
+    <section class="chat-window" aria-label="Chat window" role="region">
+      <header class="chat-header">
+        <button class="back-btn" aria-label="Back to users list">&larr;</button>
+        <div class="chat-username">Select a user</div>
+      </header>
+
+      <div class="chat-messages" role="log" aria-live="polite" aria-relevant="additions">
+        <!-- Messages appear here -->
+      </div>
+
+      <form class="chat-input-form" role="search" aria-label="Send message">
+        <input type="text" placeholder="Type a message…" aria-label="Message input" />
+        <button type="submit">Send</button>
+      </form>
+    </section>
+
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const wrap = document.querySelector(".wrap");
+      const userItems = document.querySelectorAll(".user-item");
+      const chatUsername = document.querySelector(".chat-username");
+      const backBtn = document.querySelector(".back-btn");
+      const messagesContainer = document.querySelector(".chat-messages");
+      const chatForm = document.querySelector(".chat-input-form");
+      const chatInput = chatForm.querySelector('input[type="text"]');
+
+      let currentUser = null;
+
+      function loadMessagesForUser(username) {
+        // Clear previous messages
+        messagesContainer.innerHTML = "";
+
+        // For demo, generate fake messages
+        const fakeMessages = [
+          { text: "Hey, how are you?", sent: false },
+          { text: "I'm good, thanks! You?", sent: true },
+          { text: "Doing well. Are you available to send my package?", sent: false },
+          { text: "Yes, let me check my schedule.", sent: true }
+        ];
+
+        fakeMessages.forEach(msg => {
+          const msgDiv = document.createElement("div");
+          msgDiv.classList.add("message");
+          if(msg.sent) msgDiv.classList.add("sent");
+          msgDiv.textContent = msg.text;
+          messagesContainer.appendChild(msgDiv);
+        });
+
+        // Scroll to bottom
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+
+      userItems.forEach(user => {
+        user.addEventListener("click", () => {
+          // Highlight active user
+          userItems.forEach(u => u.classList.remove("active"));
+          user.classList.add("active");
+
+          currentUser = user.dataset.username;
+          chatUsername.textContent = currentUser;
+
+          loadMessagesForUser(currentUser);
+
+          // On mobile, show chat only
+          if(window.innerWidth <= 768){
+            wrap.classList.add("show-chat");
+          }
+        });
+      });
+
+      backBtn.addEventListener("click", () => {
+        wrap.classList.remove("show-chat");
+        currentUser = null;
+        chatUsername.textContent = "Select a user";
+        messagesContainer.innerHTML = "";
+        userItems.forEach(u => u.classList.remove("active"));
+      });
+
+      chatForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const msg = chatInput.value.trim();
+        if(msg === "") return;
+
+        const msgDiv = document.createElement("div");
+        msgDiv.classList.add("message", "sent");
+        msgDiv.textContent = msg;
+        messagesContainer.appendChild(msgDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        chatInput.value = "";
+      });
+    });
+  </script>
+
+</body>
+</html>

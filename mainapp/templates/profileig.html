@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+ 
+  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+
+  <title>AcrossLandsExpressMail — User Profile</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f2f4f7;
+      --surface:#ffffff;
+      --deep-blue:#0b3d91;
+      --muted:#6b7280;
+      --accent:#ff7a18;
+      --card-shadow: 0 6px 18px rgba(11,61,145,0.06);
+      --radius:12px;
+    }
+
+    /* Reset / base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--bg);
+      color:#0f1724;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+
+    a{color:inherit; text-decoration:none}
+
+    /* Header (same as landing) */
+    .site-header{
+      position:sticky; top:0; z-index:40;
+      backdrop-filter: blur(6px);
+      background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.55));
+      border-bottom:1px solid rgba(15,23,36,0.04);
+      padding:14px 20px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo {
+      width:44px; height:44px; border-radius:10px; display:grid; place-items:center;
+      background:var(--deep-blue); color:white; font-weight:700; font-family:Poppins, Inter;
+      box-shadow: 0 6px 18px rgba(11,61,145,0.12);
+    }
+    .nav{
+      display:flex; gap:18px; align-items:center;
+    }
+    .nav a{color:var(--muted); font-weight:600}
+    .btn-login{background:transparent; padding:8px 12px; border-radius:8px; border:1px solid transparent; font-weight:600}
+    .btn-primary{background:var(--accent); color:white; padding:10px 14px; border-radius:10px; font-weight:700}
+
+    /* Layout */
+    .wrap{max-width:1100px; margin:28px auto; padding:0 20px}
+
+    /* Profile header */
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      background: var(--surface);
+      padding: 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      margin-bottom: 28px;
+    }
+    .profile-pic {
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+    .profile-pic img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .profile-info {
+      flex: 1;
+    }
+    .username {
+      font-family: Poppins, Inter;
+      font-size: 28px;
+      color: var(--deep-blue);
+      margin: 0 0 8px;
+    }
+    .follow-stats {
+      display: flex;
+      gap: 24px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .follow-stats div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .follow-stats .count {
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--deep-blue);
+    }
+    .formclass{
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      
+    }
+    /* Mobile Back Button */
+.mobile-back {
+  display:none;
+  background:none;
+  border:none;
+  color:var(--deep-blue);
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+  margin-bottom:16px;
+}
+
+/* Bottom sticky nav for mobile */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  display: none;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 15px;
+  width: 100%;
+  z-index: 50;
+}
+
+.mobile-bottom-nav .nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #6b7280;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.mobile-bottom-nav .nav-item i {
+  font-size: 22px;
+}
+
+.mobile-bottom-nav .nav-item.center-btn {
+  background: #7c4dff; /* purple circle */
+  color: #fff;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -25px; /* floats above nav bar */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-size: 28px;
+}
+
+.mobile-bottom-nav .nav-item.active i {
+  color: #7c4dff;
+}
+
+    .btn-follow {
+      background: var(--accent);
+      color: white;
+      border-radius: 10px;
+      font-weight: 700;
+      padding: 10px 18px;
+      cursor: pointer;
+      border: none;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      align-self: start;
+    }
+    .btn-follow:hover {
+      background: #e56f14;
+    }
+
+    .btn-unfollow {
+      background: #ccc;
+      color: #444;
+      border-radius: 10px;
+      font-weight: 700;
+      padding: 10px 18px;
+      cursor: pointer;
+      border: none;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      align-self: start;
+    }
+    .btn-unfollow:hover {
+      background: #bbb;
+    }
+    .btn-edit{
+      color: white;
+      border-radius: 10px;
+      font-weight: 700;
+      padding: 10px 18px;
+      cursor: pointer;
+      border: none;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      align-self: start;
+    }
+    .btn-upgrade{
+      color: white;
+      border-radius: 10px;
+      font-weight: 700;
+      padding: 10px 18px;
+      cursor: pointer;
+      border: none;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      align-self: start;
+    }
+    /* Posts list */
+    h2 {
+      font-family: Poppins, Inter;
+      color: var(--deep-blue);
+      margin-bottom: 16px;
+    }
+    .posts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .post-card {
+      background: var(--surface);
+      box-shadow: var(--card-shadow);
+      border-radius: var(--radius);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .post-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg,#dbeafe,#bfdbfe);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: var(--deep-blue);
+      font-size: 20px;
+      user-select: none;
+    }
+    .post-meta {
+      flex: 1;
+    }
+    .route {
+      font-weight: 700;
+      color: var(--deep-blue);
+      margin-bottom: 6px;
+    }
+    .sub {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    
+
+    /* Responsive */
+    @media (max-width:900px){
+      .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .btn-follow, .btn-unfollow {
+        align-self: stretch;
+        text-align: center;
+      }
+    }
+    @media (max-width:480px){
+      .profile-pic {
+        width: 80px;
+        height: 80px;
+        font-size: 28px;
+      }
+      .post-avatar {
+        width: 48px;
+        height: 48px;
+        font-size: 18px;
+      }
+        .nav { display:none }
+  .mobile-back { display:inline-block }
+  .wrap { padding:0 16px }
+  .addform { padding:20px }
+  .mobile-bottom-nav { display:flex }
+  .pp{display: none;}
+  .pp > div {display: none;}
+  .wrap{padding-bottom: 5rem;}
+    }
+    /* Responsive */
+@media (max-width:764px){
+  .nav { display:none }
+  .mobile-back { display:inline-block }
+  .wrap { padding:0 16px ;}
+  .addform { padding:20px }
+  .mobile-bottom-nav { display:flex }
+  .site-header{
+    display: none;
+  }
+  .site-header > div{display: none;}
+  .wrap{padding-bottom: 5rem;position: relative;}
+  .profile-header{
+    background: transparent;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+  }
+  
+  .profile-pic{
+    width: 100px;
+    height: 100px;
+
+  }
+  .follow-stats{
+    position: absolute;
+    top: 5rem;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding-right: 3rem;
+  }
+  .btn-edit-upgrade{margin-top: 30px;}
+  .pp{display: none;}
+  .pp > div {display: none;}
+  .pp form{display: none;}
+    .fa.fa-bell{
+    position: relative;
+  }
+    .fa.fa-bell .badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+}
+  </style>
+</head>
+<body>
+
+{%include 'navbar2.html'%}
+{{pp}}
+<main class="wrap">
+  <button class="mobile-back" onclick="history.back()">← Back</button>
+  <section class="profile-header" role="region" aria-label="User profile header">
+    <div class="profile-pic" ><img src="{{profile.profile_picture.url}}" alt="p"></div>
+    <div class="profile-info">
+        {%if profile.is_verified%}
+      <h1 class="username" style="display: flex;align-items: center;">{{usern}}<span class="material-symbols-outlined" style="color: rgb(15, 163, 15); transform: rotate(360deg);font-size: 13px; top: 0;">verified</span></h1>
+      {%else%}
+        <h1 class="username" style="display: flex;align-items: center;">{{usern}}</h1>
+      {%endif%}
+          <div>
+          <div class="bio" style="color: var(--muted);font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-style: oblique;">{{profile.bio}}</div>
+        </div>
+      <div class="follow-stats">
+        <div>
+          <div class="count"><a href="/track/{{usern}}/followers/">{{ profile.followers.count }}</a></div>
+          <div>Followers</div>
+        </div>
+        <div>
+          <div class="count"><a href="/track/{{usern}}/following/"> {{ usern.following.count }}</a></div>
+          <div>Following</div>
+        </div>
+        
+      </div>
+    </div>
+    {% if request.user != usern %}
+    <div class="formclass">
+  <form action="{% url 'toggle_follow' usern.username %}" method="post">
+    {% csrf_token %}
+    {% if is_following %}
+      <button type="submit" class="btn-follow" style="background-color: #444;">Unfollow</button>
+      
+    {% else %}
+      <button type="submit" class="btn-follow" >Follow</button>
+    {% endif %}
+  </form>
+ 
+  </div>
+  {%else%}
+  <div class="btn-edit-upgrade">
+  {%if is_verified == 'verified'%}
+  <a href="/edit/profile" class="btn-edit" style="text-align: center;background-color: #444;">Edit Profile</a>
+  {%else%}
+  <a href="/edit/profile" class="btn-edit" style="text-align: center;background-color: #444; ">Edit Profile</a>
+  <a href="#" class="btn-upgrade" style="background-color: #1E3A8A;">Upgrade to Pro</a>
+  {%endif%}
+  </div>
+{% endif %}
+  </section>
+
+  <section aria-label="User post history">
+    <h2>Post History</h2>
+    <div class="posts-list">
+      <!-- Example posts -->
+       {%for i in quarysets%}
+      <article class="post-card">
+       <div class="profile-pic" style="width: 54px;height: 54px;"><img src="{{profile.profile_picture.url}}" alt="p"></div>
+        <div class="post-meta">
+            {% if profile.is_verified%}
+                <div class="profilename" style="font-weight: 700; font-size: 16px; color: hsl(0, 0%, 6%);">{{i.user}} <span class="material-symbols-outlined" style="color: hsl(128, 92%, 42%); font-size: 15px;">verified</span></div>
+            {%else%}
+                <div class="profilename" style="font-weight: 700; font-size: 16px; color: hsl(0, 0%, 6%);">{{i.user}} </div>
+            {%endif%}
+          <div class="route">{{i.get_departure_country_name}} → {{i.get_destination_country_name}}</div>
+          <div class="sub">{{i.departure_date}} — {{i.max_weight}} kg available <span style="font-size: 10px; opacity: 0.7;">'{{i.note}}'</span></div>
+        </div>
+        <div class="action">
+            {%if i.departure_date >= today %}
+                {%if request.user != usern%}
+                    <a href="{% url 'start_chat' i.id %}" style="border: none; background: #0b6fd8; width: fit-content; padding: .7rem; border-radius: 1.6rem;margin-left: 2rem; color: #eef2ff;">Connect</a>
+                {%else%}
+                    <a href="/post/{{i.id}}/edit/" style="border: none; background: #0b6fd8; width: fit-content;padding: 1rem; border-radius: 1.6rem;margin-left: 2rem; color: #eef2ff;">Edit</a>
+                {%endif%}
+
+            {%else%}
+                {%if request.user != usern%}
+                    <button style="border: none; background: #f28b82; width: fit-content; padding: 1rem; border-radius: 1.6rem;margin-left: 2rem; color: #f2f4f7;" disabled>Expired</button>
+                {%else%}
+                    <a href="/post/{{i.id}}/delete/" style="border: none; background: #f28b82; width: fit-content; padding: .7rem; border-radius: 1.6rem;margin-left: 2rem; color: #eef2ff;">Delete</a>
+                {%endif%}
+            {%endif%}
+            
+        </div>
+      </article>
+      {%endfor%}
+
+    </div>
+  </section>
+
+</main>
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-bottom-nav">
+  <a href="/" class="nav-item"><i class="fas fa-home"></i></a>
+  <a href="/search/find_users" class="nav-item"><i class="fa fa-users"></i></a>
+  <a href="/search/flights" class="nav-item"><i class="fas fa-search"></i></a>
+  <a href="/add" class="nav-item center-btn"><i class="fas fa-plane"></i></a>
+  <a href="/notifications" class="nav-item notifiy-btn"><i class="fa fa-bell" aria-hidden="true"><span class="badge" id="notifcountmobile"></span></i></a>
+  <a href="/chat/inbox/" class="nav-item"><i class="fa fa-comment" aria-hidden="true"></i></a>
+  <a href="/profile/{{request.user}}" class="nav-item"><i class="fas fa-user"></i></a>
+</nav>
+<script>
+  const followBtn = document.getElementById('followBtn');
+  let isFollowing = false;
+
+  followBtn.addEventListener('click', () => {
+    isFollowing = !isFollowing;
+    if(isFollowing){
+      followBtn.textContent = 'Unfollow';
+      followBtn.classList.remove('btn-follow');
+      followBtn.classList.add('btn-unfollow');
+    } else {
+      followBtn.textContent = 'Follow';
+      followBtn.classList.remove('btn-unfollow');
+      followBtn.classList.add('btn-follow');
+    }
+  });
+</script>
+
+</body>
+</html>
