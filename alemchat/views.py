@@ -62,7 +62,7 @@ def inbox(request):
         if chats.exists():
             return redirect(f'/chat/chat/{chats[0].id}/')
         else:
-            return render(request, 'nochat.html', {"message":"No Chat Yet"})
+            return redirect('/')
     chat_list = []
     for c in chats:
         last = c.messages.order_by('-id').first()
