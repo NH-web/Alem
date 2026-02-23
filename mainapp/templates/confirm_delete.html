@@ -1,0 +1,62 @@
+{%load static%}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AcrossLandsExpressMail — Cancel Flight</title>
+
+  <!-- Fonts -->
+      <link rel="stylesheet" href="{%static 'mainapp/navbar.css' %}">
+
+  <link rel="stylesheet" href="{% static 'mainapp/confirm_delete.css' %}">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+
+</head>
+<body>
+  {% include 'navbar2.html' %}
+
+  <main class="wrap" role="main">
+    <button class="mobile-back" onclick="history.back()">← Back</button>
+
+    <h1>Cancel Flight</h1>
+
+    <form action="" method="post" class="addform">
+      {% csrf_token %}
+      <label for="departure_country">Departure</label>
+      <input type="text" id="departure_country" name="departure_country" disabled placeholder="{{post.get_departure_country_name}}">
+
+      <label for="destination_country">Arrival</label>
+      <input type="text" id="destination_country" name="destination_country" disabled placeholder="{{post.get_destination_country_name}}">
+
+      <label for="date">Flight Date</label>
+      <input type="date" id="date" name="departure_date" disabled min="{{today|date:'Y-m-d' }}" value="{{post.departure_date | date:'Y-m-d'}}">
+
+      <label for="weight">Available Weight (kg)</label>
+      <input type="range" id="weight" name="max_weight" min="1" disabled max="63" step="1" oninput="this.nextElementSibling.value = this.value" value="{{post.max_weight}}" required>
+      <output style="color: var(--deep-blue); font-size: 15px; font-weight: 800; text-align: center;">{{post.max_weight}}</output>
+
+      <label for="details">Note</label>
+      <textarea id="details" name="note" disabled placeholder="Any special instructions or info...">{{post.note}}</textarea>
+
+      <button type="submit" class="btn-submit">Delete</button>
+      <a href="{% url 'profile' request.user%}" class="btn-cancel">Cancel</a>
+    </form>
+  </main>
+  <!-- Mobile Bottom Nav -->
+<nav class="mobile-bottom-nav">
+  <a href="/" class="nav-item"><i class="fas fa-home"></i></a>
+  <a href="/search/find_users" class="nav-item"><i class="fa fa-users"></i></a>
+  <a href="/search/flights" class="nav-item"><i class="fas fa-search"></i></a>
+  <a href="/add" class="nav-item center-btn"><i class="fas fa-plane"></i></a>
+  <a href="/notifications" class="nav-item notifiy-btn"><i class="fa fa-bell" aria-hidden="true"><span class="badge" id="notifcountmobile"></span></i></a>
+  <a href="/chat/chats/" class="nav-item"><i class="fa fa-comment" aria-hidden="true"></i></a>
+  <a href="/profile/{{request.user}}" class="nav-item"><i class="fas fa-user"></i></a>
+</nav>
+</body>
+
+</html>

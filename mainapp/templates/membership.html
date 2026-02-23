@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AcrossLandsExpressMail — Membership Plans</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:#f2f4f7;
+      --surface:#ffffff;
+      --deep-blue:#0b3d91;
+      --muted:#6b7280;
+      --accent:#ff7a18;
+      --card-shadow: 0 6px 18px rgba(11,61,145,0.06);
+      --radius:12px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color: #0f1724;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+    }
+
+    a { text-decoration: none; color: var(--accent); }
+
+    header.site-header {
+      position: sticky; top: 0; z-index: 40;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.55));
+      border-bottom: 1px solid rgba(15,23,36,0.04);
+      padding: 14px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .logo {
+      width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center;
+      background: var(--deep-blue); color: white; font-weight: 700; font-family: Poppins, Inter;
+      box-shadow: 0 6px 18px rgba(11,61,145,0.12);
+    }
+    nav.nav {
+      display: flex; gap: 18px; align-items: center;
+    }
+    nav.nav a {
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .btn-login {
+      background: transparent;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      font-weight: 600;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    main.wrap {
+      max-width: 900px;
+      margin: 28px auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      font-family: Poppins, Inter;
+      color: var(--deep-blue);
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .plans {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .plan-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      padding: 28px 22px;
+      width: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .plan-card:hover {
+      box-shadow: 0 10px 30px rgba(11,61,145,0.15);
+    }
+
+    .plan-title {
+      font-family: Poppins, Inter;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--deep-blue);
+      margin-bottom: 12px;
+    }
+
+    .plan-price {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+
+    .plan-description {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .btn-select {
+      background: var(--deep-blue);
+      color: white;
+      padding: 12px 0;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      width: 100%;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: 16px;
+    }
+
+    .btn-select:hover {
+      background: #063170;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .plans {
+        flex-direction: column;
+        align-items: center;
+      }
+      .plan-card {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand">
+    <div class="logo">SWT</div>
+    <div>
+      <div style="font-weight:700;color:var(--deep-blue);">SendWithTravel</div>
+      <div style="font-size:12px;color:var(--muted)">Trusted traveler shipments</div>
+    </div>
+  </div>
+
+  <nav class="nav" aria-label="Main navigation">
+    <a href="#">Home</a>
+    <a href="#posts">Find Flights</a>
+    <a href="#post">Post Flight</a>
+    <a href="#about">About Us</a>
+    <a class="btn-login" href="login.html">Login</a>
+    <a class="btn-primary" href="#post">Post a Flight</a>
+  </nav>
+</header>
+
+<main class="wrap" role="main" aria-label="Membership Plans">
+
+  <h1>Choose Your Membership Plan</h1>
+
+  <div class="plans">
+    <section class="plan-card" aria-label="Free plan">
+      <div class="plan-title">Free</div>
+      <div class="plan-price">$0</div>
+      <div class="plan-description">
+        Access to basic features,<br />
+        limited posts and messaging.
+      </div>
+      <button class="btn-select" aria-label="Select Free plan">Select Plan</button>
+    </section>
+
+    <section class="plan-card" aria-label="Premium plan">
+      <div class="plan-title">Premium</div>
+      <div class="plan-price">$9.99 / month</div>
+      <div class="plan-description">
+        Unlimited posts, priority support,<br />
+        and enhanced profile visibility.
+      </div>
+      <button class="btn-select" aria-label="Select Premium plan">Select Plan</button>
+    </section>
+
+    <section class="plan-card" aria-label="Pro plan">
+      <div class="plan-title">Pro</div>
+      <div class="plan-price">$19.99 / month</div>
+      <div class="plan-description">
+        All Premium features plus<br />
+        dedicated account manager.
+      </div>
+      <button class="btn-select" aria-label="Select Pro plan">Select Plan</button>
+    </section>
+  </div>
+
+</main>
+
+</body>
+</html>

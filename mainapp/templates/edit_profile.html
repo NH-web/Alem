@@ -1,0 +1,83 @@
+{%load static%}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Edit Profile — AcrossLandsExpressMail</title>
+
+  <!-- Fonts -->
+  <link rel="stylesheet" href="{%static 'mainapp/navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'mainapp/edit_profile.css' %}">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+
+</head>
+<body>
+{%include 'navbar2.html' %}
+<main class="wrap">
+    <button class="mobile-back" onclick="history.back()">← Back</button>
+
+  <div class="edit-card">
+    <h1 style="text-align: center;">Edit Profile</h1>
+
+    <div class="profile-picture"> 
+              <label for="id_profile_picture" class="avatar-label">
+    <img 
+      src="{{ request.user.userprofile.profile_picture.url }}" 
+      alt="Profile Picture"
+      id="avatarPreview"
+    >
+    <span class="change-overlay">Change</span>
+  </label>
+</div>
+
+   
+      <form method="post" enctype="multipart/form-data"> 
+        <input 
+  type="file" 
+  name="profile_picture" 
+  accept="image/*" 
+  id="id_profile_picture"
+  hidden
+>   
+        {% csrf_token %} 
+        <label for="id_first_name">First Name</label>
+        {{ form.first_name }}
+        <label for="id_last_name">Last Name</label>
+        {{ form.last_name }}
+        <label for="id_username">Username</label> {{ form.username }} 
+        <label for="id_bio">Bio</label> {{ form.bio }} 
+        <label>Phone Number</label>
+        {{form.phone}}
+        <a href="#" class="change-link">Change phone →</a>
+        <button type="submit">Save Changes</button> 
+    </form>
+</div>
+  </div>
+</main>
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-bottom-nav">
+  <a href="/" class="nav-item"><i class="fas fa-home"></i></a>
+  <a href="/search/find_users" class="nav-item"><i class="fa fa-users"></i></a>
+  <a href="/search/flights" class="nav-item"><i class="fas fa-search"></i></a>
+  <a href="/add" class="nav-item center-btn"><i class="fas fa-plane"></i></a>
+  <a href="/notifications" class="nav-item notifiy-btn"><i class="fa fa-bell" aria-hidden="true"><span class="badge" id="notifcountmobile"></span></i></a>
+  <a href="/chat/chats/" class="nav-item"><i class="fa fa-comment" aria-hidden="true"></i></a>
+  <a href="/profile/{{request.user}}" class="nav-item"><i class="fas fa-user"></i></a>
+</nav>
+</body>
+<script>
+document.getElementById('id_profile_picture').addEventListener('change', function(e){
+  const file = e.target.files[0];
+  if (file) {
+    document.getElementById('avatarPreview').src = URL.createObjectURL(file);
+  }
+});
+</script>
+
+</html>
+
+

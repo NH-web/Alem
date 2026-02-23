@@ -1,0 +1,103 @@
+{%load static%}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AcrossLandsExpressMail — Register</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{%static 'users/registers.css' %}">
+</head>
+<body>
+
+  <section class="register-container" aria-label="Registration form">
+    <h2>Create your account</h2>
+    <form action="#" method="POST" autocomplete="off">
+        {%csrf_token%}
+        {% if messages %}
+          <div class="error">
+          {% for message in messages %}
+            <p style="color:red;">{{ message }}</p>
+          {% endfor %}
+          </div>
+        {% endif %}
+        <div>        
+          <label for="firstname">First Name</label>
+          {{form.first_name}}
+        </div>
+        {% if form.first_name.errors %}
+          <div class="error">
+            {% for error in form.first_name.errors %}
+              <p style="color:red;">{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <div>
+          <label for="lastname">Last Name</label>
+          {{form.last_name}}
+        </div>
+        {% if form.last_name.errors %}
+          <div class="error">
+            {% for error in form.last_name.errors %}
+              <p style="color:red;">{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+        
+        <div>
+          <label for="username">Username</label>
+          {{form.username}}
+        </div>
+        {% if form.username.errors %}
+          <div class="error">
+            {% for error in form.username.errors %}
+              <p style="color:red;">{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <div>
+          <label for="phone">Phone Number</label>
+          <input type="text" disabled name="phone" id="phone" value="{{phone}}">
+      </div>
+      <button type="submit">Register</button>
+    </form>
+
+    <div class="form-footer">
+      Already have an account? <a href="/accounts/login/">Login here</a>
+    </div>
+  </section>
+
+</body>
+</html>
+
+<p id="username-feedback" style="color:red; font-size:14px;"></p>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const usernameInput = document.getElementById("username");
+    const feedback = document.getElementById("username");
+
+    usernameInput.addEventListener("input", function () {
+        const username = usernameInput.value;
+
+        if (username.length < 3) {
+            feedback.textContent = "";
+            return;
+        }
+
+        fetch(`/check-username/?username=${username}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_taken) {
+                    feedback.Label = "Username is already taken.";
+                    feedback.style.borderColor = "red";
+                } else {
+                    feedback.textContent = "✅ Username is available.";
+                    feedback.style.borderColor = "green";
+                }
+            });
+    });
+});
+</script>

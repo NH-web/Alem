@@ -1,0 +1,66 @@
+{%load static%}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AcrossLandsExpressMail — Login</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.10/build/css/intlTelInput.css">
+  <link rel="stylesheet" href="{%static 'users/login.css' %}">
+
+</head>
+<body>
+  
+  <section class="login-container" aria-label="Login form">
+    <button class="mobile-back" onclick="history.back()">← Back</button>
+    <h2>Login to ALEM</h2>
+    <form method="POST" id="phone-form" onsubmit="return preparePhone()">
+    {% csrf_token %}
+    <input type="hidden" name="full_phone" id="full_phone">
+    <label>Phone Number</label>
+    <input id="phone" type="tel" required>
+    <button type="submit">SEND OTP</button>
+    </form>
+    <div class="form-footer">
+      Don't have an account? <a href="/accounts/register/">Register here</a>
+      <br><a href="/">Homepage</a>
+    </div>
+  </section>
+
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.10/build/js/intlTelInput.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const phoneInput = document.querySelector("#phone");
+
+  const iti = window.intlTelInput(phoneInput, {
+    initialCountry: "jp",
+    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.10/build/js/utils.js",
+  });
+
+  phoneInput.addEventListener("input", function () {
+    this.value = this.value.replace(/\D/g, "");
+  });
+
+  window.preparePhone = function () {
+
+    if (!iti.isValidNumber()) {
+      alert("Please enter a valid phone number");
+      return false;
+    }
+
+    const fullNumber = iti.getNumber();
+    document.getElementById("full_phone").value = fullNumber;
+
+    return true;
+  };
+
+});
+</script>
+
+</body>
+
+</html>

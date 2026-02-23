@@ -1,0 +1,35 @@
+{%load static%}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AcrossLandsExpressMail — Login</title>
+  <link rel="stylesheet" href="{% static 'mainapp/login.css' %}">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+
+</head>
+<body>
+
+  <section class="login-container" aria-label="Login form">
+    <h2>Login to SendWithTravel</h2>
+    <form action="#" method="POST" autocomplete="off">
+      <label for="email">Email address</label>
+      <input id="email" name="email" type="email" required placeholder="you@example.com" />
+
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" required placeholder="Your password" />
+
+      <button type="submit">Login</button>
+    </form>
+    <div class="form-footer">
+      Don't have an account? <a href="/accounts/register/">Register here</a>
+      <br><a href="/">Homepage</a>
+    </div>
+  </section>
+
+</body>
+</html>

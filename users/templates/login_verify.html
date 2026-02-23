@@ -1,0 +1,37 @@
+{%load static%}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AcrossLandsExpressMail — Login</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{%static 'users/login_verify.css' %}">
+</head>
+<body>
+  
+  <section class="login-container" aria-label="Login form">
+    <button class="mobile-back" onclick="history.back()">← Back</button>
+    <h2>Verify Phone</h2>
+    <form action="" method="POST" autocomplete="off">
+      {%csrf_token%}
+       {% if messages %}
+  <div class="error">
+    {% for message in messages %}
+      <p style="color:red;">{{ message }}</p>
+    {% endfor %}
+  </div>
+{% endif %}
+    <input type="number" name="verification_code" maxlength="5" required>
+
+    <button type="submit">Verify</button>
+
+    </form>
+    <div class="form-footer">
+      Try a different phone? <a href="/accounts/joinAlem/">Change phone</a>
+    </div>
+  </section>
+  
+</body>

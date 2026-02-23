@@ -1,0 +1,58 @@
+    /* Header */
+       .badge {
+  background: red;
+  color: #fff;
+  border: none;
+  font-size: 11px;
+  padding: 0px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  position: absolute;
+  top: -9px;
+  right: -5px;
+}
+.btn-logout:hover{
+  background: var(--accent);
+
+  opacity: 1;
+}
+  .fa.fa-bell{
+    position: relative;
+  }
+    .fa.fa-bell .badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+    .site-header{
+      position:sticky; top:0; z-index:40;
+      backdrop-filter: blur(6px);
+      background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.55));
+      border-bottom:1px solid rgba(15,23,36,0.04);
+      padding:14px 20px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo {
+      width:44px; height:44px; border-radius:10px; display:grid; place-items:center;
+      background:var(--deep-blue); color:white; font-weight:700; font-family:Poppins, Inter;
+      box-shadow: 0 6px 18px rgba(11,61,145,0.12);
+    }
+    .nav{
+      display:flex; gap:18px; align-items:center;
+    }
+    .nav a{color:var(--muted); font-weight:600}
+    .btn-login{background:transparent; padding:8px 12px; border-radius:8px; border:1px solid transparent; font-weight:600}
+    .btn-primary{background:var(--accent); color:white; padding:10px 14px; border-radius:10px; font-weight:700}

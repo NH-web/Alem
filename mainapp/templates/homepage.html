@@ -1,0 +1,122 @@
+{%load static%}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AcrossLandsExpressMail — Connect travelers & shippers</title>
+  <!-- Fonts -->
+  <link rel="stylesheet" href="{%static 'mainapp/navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'mainapp/homepage.css' %}">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+
+</head>
+<body>
+
+  <header class="site-header" role="banner">
+    <div class="brand">
+      <div class="logo" aria-label="AcrossLandsExpressMail logo">ALEM</div>
+      <div class="desc">
+        <div style="font-weight:700;color:var(--deep-blue);font-size:18px;">AcrossLandsExpressMail</div>
+        <div style="font-size:13px;color:var(--muted);letter-spacing:0.02em;">Trusted traveler shipments</div>
+      </div>
+    </div>
+
+    <nav class="nav" aria-label="Main navigation">
+      <a href="/accounts/login/" class="btn-login" tabindex="0">Login</a>
+      <a href="/accounts/register/" class="btn-primary" tabindex="0">Register</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="wrap hero" aria-label="Welcome section">
+      <div class="hero-left">
+        <h1>Connect with travelers. Send your package safely.</h1>
+        <p>Find passengers heading where you need to send something — faster and cheaper than shipping. Verified travelers and clear luggage limits make sending reliable and affordable.</p>
+
+        <div class="hero-cta">
+          <a href="/accounts/register/" class="btn-primary" tabindex="0">Get Started</a>
+          <a href="/accounts/login/" class="btn-login" style="padding:12px 20px; border-radius:14px; border:1.8px solid var(--accent); font-weight:700;" tabindex="0">Login</a>
+        </div>
+      </div>
+
+      <aside aria-label="Preview latest posts">
+        <h2 style="color:var(--deep-blue);font-family:Poppins,Inter;margin-bottom:16px;font-weight:700;letter-spacing:0.02em;">Latest Posts Preview</h2>
+
+        <div class="card-list">
+          <article class="card" aria-label="Post by user HM from CAN to ADD">
+            <div class="avatar" aria-hidden="true">HM</div>
+            <div class="meta">
+              <div class="route">CAN → ADD</div>
+              <div class="sub">July 31, 2025 — 25 kg available • Verified</div>
+            </div>
+            <div class="action">
+              <button class="btn-contact" disabled>Contact (login required)</button>
+            </div>
+          </article>
+
+          <article class="card" aria-label="Post by user AM from PEK to DXB">
+            <div class="avatar" aria-hidden="true">AM</div>
+            <div class="meta">
+              <div class="route">PEK → DXB</div>
+              <div class="sub">Aug 12, 2025 — 15 kg available</div>
+            </div>
+            <div class="action">
+              <button class="btn-contact" disabled>Contact (login required)</button>
+            </div>
+          </article>
+
+          <article class="card" aria-label="Post by user XS from NRT to LAX">
+            <div class="avatar" aria-hidden="true">XS</div>
+            <div class="meta">
+              <div class="route">NRT → LAX</div>
+              <div class="sub">Aug 22, 2025 — 10 kg available</div>
+            </div>
+            <div class="action">
+              <button class="btn-contact" disabled>Contact (login required)</button>
+            </div>
+          </article>
+        </div>
+      </aside>
+    </section>
+
+    <section class="wrap info-section" aria-label="About AcrossLandsExpressMail">
+      <h2>About AcrossLandsExpressMail</h2>
+      <p>
+        AcrossLandsExpressMail is a trusted platform connecting travelers with people looking to send packages quickly and affordably. Our verified traveler network helps you find passengers heading to your desired destination, ensuring safe and reliable delivery within luggage limits. Whether you want to save on shipping costs or need fast delivery, SendWithTravel makes it easy to connect, coordinate, and send with confidence.
+      </p>
+    </section>
+
+    <section class="wrap contact-info" aria-label="Contact information">
+      <h3>Contact Information</h3>
+      <p>Email: <a href="mailto: ecbridge1nati@gmail.com">ecbridge1nati@gmail.com</a></p>
+      <p>Phone: <a href="tel:+15551234567">+86 (195)89419176</a></p>
+      <p>Address: Xi'an, China mainland</p>
+    </section>
+
+    <section class="wrap comment-section" aria-label="Leave a comment or feedback">
+      <h3>Leave a Comment</h3>
+      <form onsubmit="event.preventDefault(); alert('Thank you for your comment!'); this.reset();" novalidate>
+        <label for="comment" class="sr-only">Your Comment</label>
+        <textarea id="comment" name="comment" placeholder="Your message..." required aria-required="true"></textarea>
+        <button type="submit">Submit Comment</button>
+      </form>
+    </section>
+
+    <footer>
+      <div class="footer-inner">
+        <div>© 2025 AcrossLandsExpressMail — All rights reserved</div>
+        <div class="footer-links">
+          <a href="#terms" tabindex="0">Terms of Service</a>
+          <a href="#privacy" tabindex="0">Privacy Policy</a>
+          <a href="#contact" tabindex="0">Contact Us</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+</body>
+</html>

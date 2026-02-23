@@ -1,0 +1,78 @@
+{%load static%}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AcrossLandsExpressMail - Verify Phone</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.10/build/css/intlTelInput.css">
+<link rel="stylesheet" href="{%static 'users/join.css' %}">
+
+</head>
+
+<body>
+
+<section class="login-container">
+<h2>Verify your phone</h2>
+
+<form method="POST" onsubmit="return preparePhone()">
+  {% csrf_token %}
+  <input type="hidden" name="full_phone" id="full_phone">
+
+  <label>Phone Number</label>
+  <input id="phone" type="tel" required>
+
+  <button type="submit">Send Code</button>
+</form>
+
+<div style="text-align:center;margin-top:10px;">
+  Already have an account? <a href="/accounts/login/">Log in</a>
+</div>
+</section>
+
+
+{% if messages %}
+<div class="toast">
+  {% for message in messages %}
+    {{ message }}
+  {% endfor %}
+</div>
+{% endif %}
+
+
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.10/build/js/intlTelInput.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const phoneInput = document.querySelector("#phone");
+
+  const iti = window.intlTelInput(phoneInput, {
+    initialCountry: "jp",
+    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.10/build/js/utils.js",
+  });
+
+  phoneInput.addEventListener("input", function () {
+    this.value = this.value.replace(/\D/g, "");
+  });
+
+  window.preparePhone = function () {
+
+    if (!iti.isValidNumber()) {
+      alert("Enter valid phone number");
+      return false;
+    }
+
+    const fullNumber = iti.getNumber();
+    document.getElementById("full_phone").value = fullNumber;
+
+    return true;
+  };
+
+});
+</script>
+
+</body>
+</html>

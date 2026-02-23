@@ -1,0 +1,349 @@
+{% load static %}
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'chatapp.css' %}">
+<link rel="stylesheet" href="{% static 'navbar.css' %}">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+
+</head>
+{%include "navbar.html" %}
+<div class="chat-layout {% if active_chat %}chat-open{% endif %}">
+
+  <!-- LEFT: chat list -->
+  <aside class="chat-list">
+    {%if chats%}
+    {% for chat in chats %}
+      {% for user in chat.participants.all %}
+        {% if user != request.user %}
+          <a href="{% url 'alemchat:chat_room' user.username %}"
+             class="{% if active_chat and chat.id == active_chat.id %}active{% endif %}">
+             <div class="list_info_users">
+            <span class="pcircle" style=" width: 47px;height: 47px;overflow: hidden;border-radius: 50%;"><img src="/{{user.userprofile.profile_picture}}" alt="pp" style=" width: 100%;height: 100%;object-fit: cover;"></span>
+            <div class="u_info_inside">
+            <span class="usernames"><span class="fname">{{ user.first_name}}</span><span class="lname">{{ user.last_name}}</span></span>
+                {% if user.userstatus.is_online %}
+                <span class="status online">● online</span>
+                {% else %}
+                <span class="status">last seen recently</span>
+                {% endif %}
+              </div>
+            {% if chat.unread_count %}
+              <span class="badge1">{{ chat.unread_count }}</span>
+            {% endif %}
+            
+            </div>
+          </a>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+    {%else%}
+    <div class="nomessage"><p>You haven't start any conversation</p><a href="/search/find_users">Search For Passenger</a></div>
+    {%endif%}
+
+  </aside>
+    <!-- Mobile Bottom Nav -->
+{% if not active_chat%}
+<nav class="mobile-bottom-nav">
+  <a href="/" class="nav-item"><i class="fas fa-home"></i></a>
+  <a href="/search/find_users" class="nav-item"><i class="fa fa-users"></i></a>
+  <a href="/search/flights" class="nav-item"><i class="fas fa-search"></i></a>
+  <a href="/add" class="nav-item center-btn"><i class="fas fa-plane"></i></a>
+  <a href="/notifications" class="nav-item notifiy-btn"><i class="fa fa-bell" aria-hidden="true"><span class="badge" id="notifcountmobile"></span></i></a>
+  <a href="/chat/inbox/" class="nav-item"><i class="fa fa-comment" aria-hidden="true"></i></a>
+  <a href="/profile/{{request.user}}" class="nav-item"><i class="fas fa-user"></i></a>
+</nav>
+{%endif%}
+  <!-- RIGHT: chat room -->
+  <section class="chat-room">
+    {% if active_chat %}
+<header class="chat-header">
+<div class="mobile-back" id="mobile-back" data-url="{% url 'alemchat:chat_list' %}">
+  ←
+</div>
+
+
+<div class="user-infos">
+  <span class="pcircle" style=" width: 40px;height: 40px;overflow: hidden;border-radius: 50%;"><img src="/{{other_user.userprofile.profile_picture}}" alt="pp" style=" width: 100%;height: 100%;object-fit: cover;"></span>
+
+  <div class="user-info">
+
+    <span class="username"><span class="fname"> {{ other_user.first_name}}</span><span class="lname">{{other_user.last_name}}</span></span>
+    {% if other_user.userstatus.is_online %}
+      <span class="status online">● online</span>
+    {% else %}
+      <span class="status">last seen recently</span>
+    {% endif %}
+  </div>
+  </div>
+
+  <div class="menu">
+    <button class="icon-btn" type="button" onclick="toggleMenu()">⋮</button>
+    <div class="menu-dropdown" id="chat-menu">
+      <button onclick="blockUser()">Block user</button>
+      <button>Report</button>
+      <button onclick="deleteChat()">Delete chat</button>
+    </div>
+  </div>
+</header>
+
+
+      <div class="messages">
+        {% for msg in messages %}
+          <div class="{% if msg.sender == request.user %}me{% else %}them{% endif %}">
+  {% if msg.image %}
+    <img src="{{ msg.image.url }}" style="max-width:220px;border-radius:12px;">
+  {% endif %}
+  {% if msg.content %}
+    {{ msg.content }}
+  {% endif %}
+</div>
+
+        {% endfor %}
+      </div>
+<div id="preview-box" style="display:none; padding:6px;"></div>
+
+<form id="send-form">
+  {% csrf_token %}
+  <input type="hidden" name="chatroom_id" value="{{ active_chat.id }}">
+
+  <div class="input-row">
+    <button type="button" class="attach-btn" onclick="openAttach()">＋</button>
+<input type="file" id="file-input" hidden>
+
+    <input
+      id="message-input"
+      type="text"
+      name="message"
+      placeholder="Message..."
+      autocomplete="off"
+    >
+    <button type="submit" class="send-btn">➤</button>
+  </div>
+
+  <button type="submit" style="display:none;"></button>
+</form>
+
+
+    {% else %}
+      <p class="empty">Select a conversation</p>
+    {% endif %}
+  </section>
+
+</div>
+
+{% if active_chat %}
+<script>
+  const FETCH_URL = "{% url 'alemchat:fetch_messages' active_chat.id %}";
+</script>
+{% endif %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+console.log("JS loaded");
+if (document.getElementById("send-form")) {
+const previewBox = document.getElementById("preview-box");
+const form = document.getElementById("send-form");
+const input = document.getElementById("message-input");
+const fileInput = document.getElementById("file-input");
+fileInput.addEventListener("change", function () {
+  previewBox.innerHTML = "";
+
+  const file = this.files[0];
+  if (!file) {
+    previewBox.style.display = "none";
+    return;
+  }
+
+  const img = document.createElement("img");
+  img.src = URL.createObjectURL(file);
+  img.style.maxWidth = "120px";
+  img.style.borderRadius = "10px";
+
+  previewBox.appendChild(img);
+  previewBox.style.display = "block";
+});
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const message = input.value.trim();
+  const file = fileInput.files[0];
+
+  if (!message && !file) return;
+
+  // ✅ CLEAR INPUTS IMMEDIATELY
+  input.blur();
+  input.value = "";
+  input.focus();
+  fileInput.value = "";
+  previewBox.style.display = "none";
+
+  const formData = new FormData();
+  formData.append("chatroom_id", "{{ active_chat.id }}");
+  if (message) formData.append("message", message);
+  if (file) formData.append("image", file);
+
+  fetch("{% url 'alemchat:send_message' %}", {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
+    },
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    const messagesDiv = document.querySelector(".messages");
+
+    const msgDiv = document.createElement("div");
+    msgDiv.className = "me";
+
+    if (data.image) {
+      const img = document.createElement("img");
+      img.src = data.image;
+      img.style.maxWidth = "220px";
+      img.style.borderRadius = "12px";
+      msgDiv.appendChild(img);
+    }
+
+    if (data.content) {
+      const text = document.createElement("div");
+      text.textContent = data.content;
+      msgDiv.appendChild(text);
+    }
+
+    messagesDiv.appendChild(msgDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  })
+  .catch(() => {
+    // ❌ optional: restore text if request fails
+    input.value = message;
+  });
+});
+
+input.addEventListener("focus", () => {
+  setTimeout(() => {
+    input.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, 300);
+});
+function toggleMenu() {
+  const menu = document.getElementById("chat-menu");
+  menu.style.display =
+    menu.style.display === "block" ? "none" : "block";
+}
+
+function deleteChat() {
+  if (!confirm("Delete this chat?")) return;
+
+  const chatId = "{{ active_chat.id|default:'' }}";
+  if (!chatId) return;
+
+  fetch(`/chat/delete/${chatId}/`, {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      window.location.href = "{% url 'alemchat:chat_list' %}";
+    }
+  });
+}
+
+function blockUser() {
+  if (!confirm("Block this user and delete chat?")) return;
+
+  const userId = "{{ other_user.id|default:'' }}";
+  if (!userId) return;
+
+  fetch(`/chat/block/${userId}/`, {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      window.location.href = "{% url 'alemchat:chat_list' %}";
+    }
+  });
+}
+
+const backBtn = document.getElementById("mobile-back");
+if (backBtn) {
+  backBtn.addEventListener("click", () => {
+    window.location.href = backBtn.dataset.url;
+  });
+}
+
+document.addEventListener("click", function (e) {
+  const menu = document.getElementById("chat-menu");
+  const btn = document.querySelector(".icon-btn");
+
+  if (!menu || !btn) return;
+  if (!menu.contains(e.target) && !btn.contains(e.target)) {
+    menu.style.display = "none";
+  }
+});
+
+function fetchMessages() {
+  fetch(FETCH_URL)
+    .then(res => res.json())
+    .then(data => {
+      const messagesDiv = document.querySelector(".messages");
+
+      data.messages.forEach(msg => {
+        if (document.getElementById("msg-" + msg.id)) return;
+
+        const div = document.createElement("div");
+        div.id = "msg-" + msg.id;
+        div.className =
+          msg.sender === "{{ request.user.username }}" ? "me" : "them";
+
+        if (msg.image) {
+          const img = document.createElement("img");
+          img.src = msg.image;
+          img.style.maxWidth = "220px";
+          img.style.borderRadius = "12px";
+          div.appendChild(img);
+        }
+
+        if (msg.content) {
+          const text = document.createElement("div");
+          text.textContent = msg.content;
+          div.appendChild(text);
+        }
+
+        // ✔✔ SEEN INDICATOR (sender only)
+        if (msg.sender === "{{ request.user.username }}") {
+          const seen = document.createElement("span");
+          seen.style.fontSize = "10px";
+          seen.style.color = msg.is_read ? "#0084ff" : "#999";
+          seen.textContent = msg.is_read ? " ✔✔" : " ✔";
+          div.appendChild(seen);
+        }
+
+        messagesDiv.appendChild(div);
+      });
+
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    });
+}}
+
+if (typeof FETCH_URL !== "undefined") {
+  setInterval(fetchMessages, 4000);
+}
+});
+function openAttach() {
+  document.getElementById("file-input").click();
+}
+function toggleMenu() {
+  const menu = document.getElementById("chat-menu");
+  menu.style.display =
+    menu.style.display === "block" ? "none" : "block";
+}
+</script>
+
